@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dictionaries>
+  <!-- countries -->
+  <itemlist name="Countries" ispublic="true">
+	<item key="" value="Select a Country" />
+	<item key="AF" value="Afghanistan" />
+	<item key="AX" value="Åland Islands" />
+	<item key="AL" value="Albania" />
+	<item key="DZ" value="Algeria" />
+	<item key="AS" value="American Samoa" />
+	<item key="AD" value="Andorra" />
+	<item key="AO" value="Angola" />
+	<item key="AI" value="Anguilla" />
+	<item key="AQ" value="Antarctica" />
+	<item key="AG" value="Antigua and Barbuda" />
+	<item key="AR" value="Argentina" />
+	<item key="AM" value="Armenia" />
+	<item key="AW" value="Aruba" />
+	<item key="AU" value="Australia" />
+	<item key="AT" value="Austria" />
+	<item key="AZ" value="Azerbaijan" />
+	<item key="BS" value="Bahamas" />
+	<item key="BH" value="Bahrain" />
+	<item key="BD" value="Bangladesh" />
+	<item key="BB" value="Barbados" />
+	<item key="BY" value="Belarus" />
+	<item key="BE" value="Belgium" />
+	<item key="BZ" value="Belize" />
+	<item key="BJ" value="Benin" />
+	<item key="BM" value="Bermuda" />
+	<item key="BT" value="Bhutan" />
+	<item key="BO" value="Bolivia" />
+	<item key="BA" value="Bosnia and Herzegovina" />
+	<item key="BW" value="Botswana" />
+	<item key="BV" value="Bouvet Island" />
+	<item key="BR" value="Brazil" />
+	<item key="IO" value="British Indian Ocean Territory" />
+	<item key="BN" value="Brunei Darussalam" />
+	<item key="BG" value="Bulgaria" />
+	<item key="BF" value="Burkina Faso" />
+	<item key="BI" value="Burundi" />
+	<item key="KH" value="Cambodia" />
+	<item key="CM" value="Cameroon" />
+	<item key="CA" value="Canada" />
+	<item key="CV" value="Cape Verde" />
+	<item key="KY" value="Cayman Islands" />
+	<item key="CF" value="Central African Republic" />
+	<item key="TD" value="Chad" />
+	<item key="CL" value="Chile" />
+	<item key="CN" value="China" />
+	<item key="CX" value="Christmas Island" />
+	<item key="CC" value="Cocos (Keeling) Islands" />
+	<item key="CO" value="Colombia" />
+	<item key="KM" value="Comoros" />
+	<item key="CG" value="Congo" />
+	<item key="CD" value="Congo, The Democratic Republic of The" />
+	<item key="CK" value="Cook Islands" />
+	<item key="CR" value="Costa Rica" />
+	<item key="CI" value="Cote D'ivoire" />
+	<item key="HR" value="Croatia" />
+	<item key="CU" value="Cuba" />
+	<item key="CY" value="Cyprus" />
+	<item key="CZ" value="Czech Republic" />
+	<item key="DK" value="Denmark" />
+	<item key="DJ" value="Djibouti" />
+	<item key="DM" value="Dominica" />
+	<item key="DO" value="Dominican Republic" />
+	<item key="EC" value="Ecuador" />
+	<item key="EG" value="Egypt" />
+	<item key="SV" value="El Salvador" />
+	<item key="GQ" value="Equatorial Guinea" />
+	<item key="ER" value="Eritrea" />
+	<item key="EE" value="Estonia" />
+	<item key="ET" value="Ethiopia" />
+	<item key="FK" value="Falkland Islands (Malvinas)" />
+	<item key="FO" value="Faroe Islands" />
+	<item key="FJ" value="Fiji" />
+	<item key="FI" value="Finland" />
+	<item key="FR" value="France" />
+	<item key="GF" value="French Guiana" />
+	<item key="PF" value="French Polynesia" />
+	<item key="TF" value="French Southern Territories" />
+	<item key="GA" value="Gabon" />
+	<item key="GM" value="Gambia" />
+	<item key="GE" value="Georgia" />
+	<item key="DE" value="Germany" />
+	<item key="GH" value="Ghana" />
+	<item key="GI" value="Gibraltar" />
+	<item key="GR" value="Greece" />
+	<item key="GL" value="Greenland" />
+	<item key="GD" value="Grenada" />
+	<item key="GP" value="Guadeloupe" />
+	<item key="GU" value="Guam" />
+	<item key="GT" value="Guatemala" />
+	<item key="GG" value="Guernsey" />
+	<item key="GN" value="Guinea" />
+	<item key="GW" value="Guinea-bissau" />
+	<item key="GY" value="Guyana" />
+	<item key="HT" value="Haiti" />
+	<item key="HM" value="Heard Island and Mcdonald Islands" />
+	<item key="VA" value="Holy See (Vatican City State)" />
+	<item key="HN" value="Honduras" />
+	<item key="HK" value="Hong Kong" />
+	<item key="HU" value="Hungary" />
+	<item key="IS" value="Iceland" />
+	<item key="IN" value="India" />
+	<item key="ID" value="Indonesia" />
+	<item key="IR" value="Iran, Islamic Republic of" />
+	<item key="IQ" value="Iraq" />
+	<item key="IE" value="Ireland" />
+	<item key="IM" value="Isle of Man" />
+	<item key="IL" value="Israel" />
+	<item key="IT" value="Italy" />
+	<item key="JM" value="Jamaica" />
+	<item key="JP" value="Japan" />
+	<item key="JE" value="Jersey" />
+	<item key="JO" value="Jordan" />
+	<item key="KZ" value="Kazakhstan" />
+	<item key="KE" value="Kenya" />
+	<item key="KI" value="Kiribati" />
+	<item key="KP" value="Korea, Democratic People's Republic of" />
+	<item key="KR" value="Korea, Republic of" />
+	<item key="KW" value="Kuwait" />
+	<item key="KG" value="Kyrgyzstan" />
+	<item key="LA" value="Lao People's Democratic Republic" />
+	<item key="LV" value="Latvia" />
+	<item key="LB" value="Lebanon" />
+	<item key="LS" value="Lesotho" />
+	<item key="LR" value="Liberia" />
+	<item key="LY" value="Libyan Arab Jamahiriya" />
+	<item key="LI" value="Liechtenstein" />
+	<item key="LT" value="Lithuania" />
+	<item key="LU" value="Luxembourg" />
+	<item key="MO" value="Macao" />
+	<item key="MK" value="Macedonia, The Former Yugoslav Republic of" />
+	<item key="MG" value="Madagascar" />
+	<item key="MW" value="Malawi" />
+	<item key="MY" value="Malaysia" />
+	<item key="MV" value="Maldives" />
+	<item key="ML" value="Mali" />
+	<item key="MT" value="Malta" />
+	<item key="MH" value="Marshall Islands" />
+	<item key="MQ" value="Martinique" />
+	<item key="MR" value="Mauritania" />
+	<item key="MU" value="Mauritius" />
+	<item key="YT" value="Mayotte" />
+	<item key="MX" value="Mexico" />
+	<item key="FM" value="Micronesia, Federated States of" />
+	<item key="MD" value="Moldova, Republic of" />
+	<item key="MC" value="Monaco" />
+	<item key="MN" value="Mongolia" />
+	<item key="ME" value="Montenegro" />
+	<item key="MS" value="Montserrat" />
+	<item key="MA" value="Morocco" />
+	<item key="MZ" value="Mozambique" />
+	<item key="MM" value="Myanmar" />
+	<item key="NA" value="Namibia" />
+	<item key="NR" value="Nauru" />
+	<item key="NP" value="Nepal" />
+	<item key="NL" value="Netherlands" />
+	<item key="AN" value="Netherlands Antilles" />
+	<item key="NC" value="New Caledonia" />
+	<item key="NZ" value="New Zealand" />
+	<item key="NI" value="Nicaragua" />
+	<item key="NE" value="Niger" />
+	<item key="NG" value="Nigeria" />
+	<item key="NU" value="Niue" />
+	<item key="NF" value="Norfolk Island" />
+	<item key="MP" value="Northern Mariana Islands" />
+	<item key="NO" value="Norway" />
+	<item key="OM" value="Oman" />
+	<item key="PK" value="Pakistan" />
+	<item key="PW" value="Palau" />
+	<item key="PS" value="Palestinian Territory, Occupied" />
+	<item key="PA" value="Panama" />
+	<item key="PG" value="Papua New Guinea" />
+	<item key="PY" value="Paraguay" />
+	<item key="PE" value="Peru" />
+	<item key="PH" value="Philippines" />
+	<item key="PN" value="Pitcairn" />
+	<item key="PL" value="Poland" />
+	<item key="PT" value="Portugal" />
+	<item key="PR" value="Puerto Rico" />
+	<item key="QA" value="Qatar" />
+	<item key="RE" value="Reunion" />
+	<item key="RO" value="Romania" />
+	<item key="RU" value="Russian Federation" />
+	<item key="RW" value="Rwanda" />
+	<item key="SH" value="Saint Helena" />
+	<item key="KN" value="Saint Kitts and Nevis" />
+	<item key="LC" value="Saint Lucia" />
+	<item key="PM" value="Saint Pierre and Miquelon" />
+	<item key="VC" value="Saint Vincent and The Grenadines" />
+	<item key="WS" value="Samoa" />
+	<item key="SM" value="San Marino" />
+	<item key="ST" value="Sao Tome and Principe" />
+	<item key="SA" value="Saudi Arabia" />
+	<item key="SN" value="Senegal" />
+	<item key="RS" value="Serbia" />
+	<item key="SC" value="Seychelles" />
+	<item key="SL" value="Sierra Leone" />
+	<item key="SG" value="Singapore" />
+	<item key="SK" value="Slovakia" />
+	<item key="SI" value="Slovenia" />
+	<item key="SB" value="Solomon Islands" />
+	<item key="SO" value="Somalia" />
+	<item key="ZA" value="South Africa" />
+	<item key="GS" value="South Georgia and The South Sandwich Islands" />
+	<item key="ES" value="Spain" />
+	<item key="LK" value="Sri Lanka" />
+	<item key="SD" value="Sudan" />
+	<item key="SR" value="Suriname" />
+	<item key="SJ" value="Svalbard and Jan Mayen" />
+	<item key="SZ" value="Swaziland" />
+	<item key="SE" value="Sweden" />
+	<item key="CH" value="Switzerland" />
+	<item key="SY" value="Syrian Arab Republic" />
+	<item key="TW" value="Taiwan, Province of China" />
+	<item key="TJ" value="Tajikistan" />
+	<item key="TZ" value="Tanzania, United Republic of" />
+	<item key="TH" value="Thailand" />
+	<item key="TL" value="Timor-leste" />
+	<item key="TG" value="Togo" />
+	<item key="TK" value="Tokelau" />
+	<item key="TO" value="Tonga" />
+	<item key="TT" value="Trinidad and Tobago" />
+	<item key="TN" value="Tunisia" />
+	<item key="TR" value="Turkey" />
+	<item key="TM" value="Turkmenistan" />
+	<item key="TC" value="Turks and Caicos Islands" />
+	<item key="TV" value="Tuvalu" />
+	<item key="UG" value="Uganda" />
+	<item key="UA" value="Ukraine" />
+	<item key="AE" value="United Arab Emirates" />
+	<item key="GB" value="United Kingdom" />
+	<item key="US" value="United States" />
+	<item key="UM" value="United States Minor Outlying Islands" />
+	<item key="UY" value="Uruguay" />
+	<item key="UZ" value="Uzbekistan" />
+	<item key="VU" value="Vanuatu" />
+	<item key="VE" value="Venezuela" />
+	<item key="VN" value="Viet Nam" />
+	<item key="VG" value="Virgin Islands, British" />
+	<item key="VI" value="Virgin Islands, U.S." />
+	<item key="WF" value="Wallis and Futuna" />
+	<item key="EH" value="Western Sahara" />
+	<item key="YE" value="Yemen" />
+	<item key="ZM" value="Zambia" />
+	<item key="ZW" value="Zimbabwe" />
+  </itemlist>  
+  <!-- end countries -->
+    <!-- languages -->
+  <itemlist name="Languages" ispublic="False">	
+	<item key="bs" value="Bosnian"/>
+	<item key="bg" value="Bulgarian"/>
+	<item key="pt-BR" value="Brazilian"/>
+	<item key="zh-CN" value="Chinese (simplified)"/>
+	<item key="zh-TW" value="Chinese (traditional)"/>
+	<item key="cs" value="Czech"/>
+	<item key="hr" value="Croatian"/>
+	<item key="da" value="Danish"/>
+	<item key="nl" value="Dutch"/>
+	<item key="en-GB" selected="selected" value="English"/>
+	<item key="es" value="Español"/>
+	<item key="et" value="Estonian"/>
+	<item key="fi" value="Finnish"/>
+	<item key="fr" value="French"/>
+	<item key="de" value="German"/>
+	<item key="el" value="Greek"/>
+	<item key="he" value="Hebrew"/>
+	<item key="hu" value="Hungarian"/>
+	<item key="is" value="Icelandic"/>
+	<item key="id" value="Indonesian"/>
+	<item key="it" value="Italian"/>
+	<item key="ja" value="Japanese"/>
+	<item key="lt" value="Lithuanian"/>
+	<item key="no" value="Norwegian"/>
+	<item key="pl" value="Polish"/>
+	<item key="pt-BR" value="Portuguese"/>
+	<item key="ro" value="Romanian"/>
+	<item key="ru" value="Russian"/>
+	<item key="sr" value="Serbian"/>
+	<item key="sk" value="Slovak"/>
+	<item key="sl" value="Slovenian"/>
+	<item key="sv" value="Swedish"/>
+	<item key="uk" value="Ukrainian"/>
+	<item key="vi" value="Vietnamese"/>
+  </itemlist>  
+  <!-- end languages-->
+  <itemlist name="US States" ispublic="true">
+	<item key="" value="Select a State" />
+	<item key="AL" value="Alabama" />
+	<item key="AK" value="Alaska" />
+	<item key="AZ" value="Arizona" />
+	<item key="AR" value="Arkansas" />
+	<item key="CA" value="California" />
+	<item key="CO" value="Colorado" />
+	<item key="CT" value="Connecticut" />
+	<item key="DE" value="Delaware" />
+	<item key="DC" value="District Of Columbia" />
+	<item key="FL" value="Florida" />
+	<item key="GA" value="Georgia" />
+	<item key="HI" value="Hawaii" />
+	<item key="ID" value="Idaho" />
+	<item key="IL" value="Illinois" />
+	<item key="IN" value="Indiana" />
+	<item key="IA" value="Iowa" />
+	<item key="KS" value="Kansas" />
+	<item key="KY" value="Kentucky" />
+	<item key="LA" value="Louisiana" />
+	<item key="ME" value="Maine" />
+	<item key="MD" value="Maryland" />
+	<item key="MA" value="Massachusetts" />
+	<item key="MI" value="Michigan" />
+	<item key="MN" value="Minnesota" />
+	<item key="MS" value="Mississippi" />
+	<item key="MO" value="Missouri" />
+	<item key="MT" value="Montana" />
+	<item key="NE" value="Nebraska" />
+	<item key="NV" value="Nevada" />
+	<item key="NH" value="New Hampshire" />
+	<item key="NJ" value="New Jersey" />
+	<item key="NM" value="New Mexico" />
+	<item key="NY" value="New York" />
+	<item key="NC" value="North Carolina" />
+	<item key="ND" value="North Dakota" />
+	<item key="OH" value="Ohio" />
+	<item key="OK" value="Oklahoma" />
+	<item key="OR" value="Oregon" />
+	<item key="PA" value="Pennsylvania" />
+	<item key="RI" value="Rhode Island" />
+	<item key="SC" value="South Carolina" />
+	<item key="SD" value="South Dakota" />
+	<item key="TN" value="Tennessee" />
+	<item key="TX" value="Texas" />
+	<item key="UT" value="Utah" />
+	<item key="VT" value="Vermont" />
+	<item key="VA" value="Virginia" />
+	<item key="WA" value="Washington" />
+	<item key="WV" value="West Virginia" />
+	<item key="WI" value="Wisconsin" />
+	<item key="WY" value="Wyoming" />
+  </itemlist>
+  <!-- end states -->
+  <!--timezone-->
+  <itemlist name="Timezones" ispublic="True">
+		<item key="" value="Select Timezone" />
+		<item key="GMT-12:00" value="(GMT-12:00) International Date Line West" />
+		<item key="GMT-11:00" value="(GMT-11:00) Midway Island, Samoa" />
+		<item key="GMT-10:00" value="(GMT-10:00) Hawaii" />
+		<item key="GMT-09:00" value="(GMT-09:00) Alaska" />
+		<item key="GMT-08:00" value="(GMT-08:00) Pacific Time (US &amp; Canada)" />
+		<item key="GMT-08:00" value="(GMT-08:00) Tijuana, Baja California" />
+		<item key="GMT-07:00" value="(GMT-07:00) Arizona" />
+		<item key="GMT-07:00" value="(GMT-07:00) Chihuahua, La Paz, Mazatlan" />
+		<item key="GMT-07:00" value="(GMT-07:00) Mountain Time (US &amp; Canada)" />
+		<item key="GMT-06:00" value="(GMT-06:00) Central America" />
+		<item key="GMT-06:00" value="(GMT-06:00) Central Time (US &amp; Canada)" />
+		<item key="GMT-06:00" value="(GMT-06:00) Guadalajara, Mexico City, Monterrey" />
+		<item key="GMT-06:00" value="(GMT-06:00) Saskatchewan" />
+		<item key="GMT-05:00" value="(GMT-05:00) Bogota, Lima, Quito, Rio Branco" />
+		<item key="GMT-05:00" value="(GMT-05:00) Eastern Time (US &amp; Canada)" />
+		<item key="GMT-05:00" value="(GMT-05:00) Indiana (East)" />
+		<item key="GMT-04:00" value="(GMT-04:00) Atlantic Time (Canada)" />
+		<item key="GMT-04:00" value="(GMT-04:00) Caracas, La Paz" />
+		<item key="GMT-04:00" value="(GMT-04:00) Manaus" />
+		<item key="GMT-04:00" value="(GMT-04:00) Santiago" />
+		<item key="GMT-03:30" value="(GMT-03:30) Newfoundland" />
+		<item key="GMT-03:00" value="(GMT-03:00) Brasilia" />
+		<item key="GMT-03:00" value="(GMT-03:00) Buenos Aires, Georgetown" />
+		<item key="GMT-03:00" value="(GMT-03:00) Greenland" />
+		<item key="GMT-03:00" value="(GMT-03:00) Montevideo" />
+		<item key="GMT-02:00" value="(GMT-02:00) Mid-Atlantic" />
+		<item key="GMT-01:00" value="(GMT-01:00) Cape Verde Is." />
+		<item key="GMT-01:00" value="(GMT-01:00) Azores" />
+		<item key="GMT+00:00" value="(GMT+00:00) Casablanca, Monrovia, Reykjavik" />
+		<item key="GMT+00:00" value="(GMT+00:00) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London" />
+		<item key="GMT+01:00" value="(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" />
+		<item key="GMT+01:00" value="(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague" />
+		<item key="GMT+01:00" value="(GMT+01:00) Brussels, Copenhagen, Madrid, Paris" />
+		<item key="GMT+01:00" value="(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb" />
+		<item key="GMT+01:00" value="(GMT+01:00) West Central Africa" />
+		<item key="GMT+02:00" value="(GMT+02:00) Amman" />
+		<item key="GMT+02:00" value="(GMT+02:00) Athens, Bucharest, Istanbul" />
+		<item key="GMT+02:00" value="(GMT+02:00) Beirut" />
+		<item key="GMT+02:00" value="(GMT+02:00) Cairo" />
+		<item key="GMT+02:00" value="(GMT+02:00) Harare, Pretoria" />
+		<item key="GMT+02:00" value="(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius" />
+		<item key="GMT+02:00" value="(GMT+02:00) Jerusalem" />
+		<item key="GMT+02:00" value="(GMT+02:00) Minsk" />
+		<item key="GMT+02:00" value="(GMT+02:00) Windhoek" />
+		<item key="GMT+03:00" value="(GMT+03:00) Kuwait, Riyadh, Baghdad" />
+		<item key="GMT+03:00" value="(GMT+03:00) Moscow, St. Petersburg, Volgograd" />
+		<item key="GMT+03:00" value="(GMT+03:00) Nairobi" />
+		<item key="GMT+03:00" value="(GMT+03:00) Tbilisi" />
+		<item key="GMT+03:30" value="(GMT+03:30) Tehran" />
+		<item key="GMT+04:00" value="(GMT+04:00) Abu Dhabi, Muscat" />
+		<item key="GMT+04:00" value="(GMT+04:00) Baku" />
+		<item key="GMT+04:00" value="(GMT+04:00) Yerevan" />
+		<item key="GMT+04:30" value="(GMT+04:30) Kabul" />
+		<item key="GMT+05:00" value="(GMT+05:00) Yekaterinburg" />
+		<item key="GMT+05:00" value="(GMT+05:00) Islamabad, Karachi, Tashkent" />
+		<item key="GMT+05:30" value="(GMT+05:30) Sri Jayawardenapura" />
+		<item key="GMT+05:30" value="(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi" />
+		<item key="GMT+05:45" value="(GMT+05:45) Kathmandu" />
+		<item key="GMT+06:00" value="(GMT+06:00) Almaty, Novosibirsk" />
+		<item key="GMT+06:00" value="(GMT+06:00) Astana, Dhaka" />
+		<item key="GMT+06:30" value="(GMT+06:30) Yangon (Rangoon)" />
+		<item key="GMT+07:00" value="(GMT+07:00) Bangkok, Hanoi, Jakarta" />
+		<item key="GMT+07:00" value="(GMT+07:00) Krasnoyarsk" />
+		<item key="GMT+08:00" value="(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi" />
+		<item key="GMT+08:00" value="(GMT+08:00) Kuala Lumpur, Singapore" />
+		<item key="GMT+08:00" value="(GMT+08:00) Irkutsk, Ulaan Bataar" />
+		<item key="GMT+08:00" value="(GMT+08:00) Perth" />
+		<item key="GMT+08:00" value="(GMT+08:00) Taipei" />
+		<item key="GMT+09:00" value="(GMT+09:00) Osaka, Sapporo, Tokyo" />
+		<item key="GMT+09:00" value="(GMT+09:00) Seoul" />
+		<item key="GMT+09:00" value="(GMT+09:00) Yakutsk" />
+		<item key="GMT+09:30" value="(GMT+09:30) Adelaide" />
+		<item key="GMT+09:30" value="(GMT+09:30) Darwin" />
+		<item key="GMT+10:00" value="(GMT+10:00) Brisbane" />
+		<item key="GMT+10:00" value="(GMT+10:00) Canberra, Melbourne, Sydney" />
+		<item key="GMT+10:00" value="(GMT+10:00) Hobart" />
+		<item key="GMT+10:00" value="(GMT+10:00) Guam, Port Moresby" />
+		<item key="GMT+10:00" value="(GMT+10:00) Vladivostok" />
+		<item key="GMT+11:00" value="(GMT+11:00) Magadan, Solomon Is., New Caledonia" />
+		<item key="GMT+12:00" value="(GMT+12:00) Auckland, Wellington" />
+		<item key="GMT+12:00" value="(GMT+12:00) Fiji, Kamchatka, Marshall Is." />
+		<item key="GMT+13:00" value="(GMT+13:00) Nuku'alofa" />
+   </itemlist>
+</Dictionaries> 

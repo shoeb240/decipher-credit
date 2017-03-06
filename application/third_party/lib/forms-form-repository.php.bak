@@ -1,0 +1,661 @@
+<?php
+
+
+require_once(ABSPATH . '/lib/rb.php');
+require_once(ABSPATH . '/lib/forms-form-view-model.php');
+require_once(ABSPATH . '/lib/forms-form-field-value-view-model.php');
+require_once(ABSPATH . '/lib/forms-utils.php');
+require_once(ABSPATH . '/lib/forms-settings.php');
+
+class FormRepository extends RedBean_Driver_PDO{
+
+    function __construct() {		
+	    $dsn = 'mysql:host=' . Settings::HOST . ';dbname=' . Settings::DB_NAME;		
+		
+		R::setup($dsn, Settings::DB_USERNAME, Settings::DB_PASSWORD);        
+		R::freeze( true );
+        
+		parent::__construct($dsn, Settings::DB_USERNAME, Settings::DB_PASSWORD);
+    }
+	
+	function getConnection(){
+	  return mysqli_connect(Settings::HOST, Settings::DB_USERNAME, Settings::DB_PASSWORD);
+	}
+	
+	public function getRawFormSet()
+	{
+		return R::getAll( 'select * from form order by DateAdded desc' );
+	}
+
+
+	public function getForms()
+	{	   	   
+	   $formViewsList = new FormListViewModel();
+	   $formViews = array();
+	   $formViewTemplates=array();
+       $formSet =  $this->getRawFormSet();
+       foreach ($formSet as $form)
+       {
+		   $formView = FormViewModel::createBasicFromObject($form);
+			array_push($formViews, $formView);
+		 
+			if($formView->IsTemplate){
+				array_push($formViewTemplates, $formView);
+			}
+       }	   
+       
+	   $formViewsList->FormViews = $formViews;
+	   $formViewsList->FormViewTemplates = $formViewTemplates;
+	   
+       return $formViewsList;
+	}
+	
+	public function fetchRawFormsForExport($templatesOnly=false)
+	{	   	   
+	   $forms = array();
+	   $formTemplates = array();
+       $formSet =  $this->getRawFormSet();
+       foreach ($formSet as $form)
+       {
+		   $basic_formView = FormViewModel::createBasicFromObject($form);		   
+			if($basic_formView->IsTemplate){
+			    $form["Fields"]=$this->GetFieldsByFormId($form["ID"]);				
+				array_push($formTemplates, $form);
+			}else if (!$templatesOnly){
+				$form["Fields"]=$this->GetFieldsByFormId($form["ID"]);				
+				array_push($forms, $form);
+			}
+       }
+	   if ($templatesOnly){
+			return $formTemplates;
+	   }else{
+		   return array_merge($formTemplates, $forms);
+	   }
+	}
+	
+	 public function createNew()
+     {
+        $formName = Constants::FORM_DEFAULT_TITLE;
+		$formSlug = Utils::toSlug($formName);		
+		$status=Constants::FORM_STATUS_DRAFT;
+		$confirmation = Constants::FORM_DEFAULT_CONFIRMATION_MESSAGE;
+		$date = date('Y-m-d H:i:s');
+		
+		//set extended properties
+		$props = new StdClass ();
+		FormViewModel::getDefaultExtendedProperties($props);
+		$extendedProperties = json_encode($props);
+		 
+		$formId = $this->InsertForm($formName, $formSlug, $status, $date, $confirmation, $extendedProperties);
+		return $formId;
+         
+     }
+	 
+	 public function InsertForm($formName, $formslug, $status, $date, $confirmation, $extendedProperties, $theme=Null,$notificationEmail=Null){
+		$query = sprintf("INSERT INTO form (Title, Slug, Status, DateAdded, ConfirmationMessage,Theme, NotificationEmail, ExtendedProperties) " . 
+				         "VALUES ( '{$formName}', '{$formslug}', '{$status}','{$date}', '{$confirmation}','{$theme}', '{$notificationEmail}', '{$extendedProperties}')");
+				
+		parent::Execute($query);
+		return parent::getInsertID();		
+	 }
+	 
+	 public function getByPrimaryKey($id)
+	 {
+	    $forms = R::getAll(sprintf("SELECT * FROM form WHERE ID={$id}"));
+		if(count($forms) > 0)
+		{
+		  return $forms[0];
+		}
+	 }
+	 
+	public function update($formView, $form)
+    {
+        if (!isset($formView))
+        {
+            throw new Exception("Invalid update operation. Form view is null.");
+        }
+
+        if (!isset($form))
+        {
+            throw new Exception("Invalid update operation. Form not found.");
+        }
+		
+		$link = $this->getConnection();
+        
+		$formID = $form["ID"];	
+        $Status = $formView->Status;
+        $Title = empty($formView->Title) ? "Registration" : mysqli_real_escape_string($link, $formView->Title);        
+		$Slug =  Utils::toSlug($Title);		
+        $ConfirmationMessage = mysqli_real_escape_string($link, $formView->ConfirmationMessage);
+        $Theme = $formView->Theme;
+        $NotificationEmail = $formView->NotificationEmail;
+		
+		//Extended properties
+		$props = new StdClass ();
+		$props->SubmitButtonText = mysqli_real_escape_string($link, $formView->SubmitButtonText);
+		$props->AllowSave =  strtolower($formView->AllowSave) == "yes";
+		$props->RedirectUrl = mysqli_real_escape_string($link, $formView->RedirectUrl);
+		$props->IsTemplate = $formView->IsTemplate;
+		
+		$extendedProps = json_encode($props);
+        
+		$query = sprintf("UPDATE form SET Status='{$Status}', Title='{$Title}', ConfirmationMessage='{$ConfirmationMessage}', Slug='{$Slug}', " . 
+		                 "Theme = '{$Theme}', NotificationEmail='{$NotificationEmail}', ExtendedProperties='{$extendedProps}' WHERE ID='{$formID}' ");
+		parent::Execute($query);
+    }
+	
+	public function updateTemplateProperty($formid, $isTemplate)
+    {
+        if (!isset($isTemplate))
+        {
+            throw new Exception("Invalid update operation. Form id is null.");
+        }
+
+        $form = $this->getByPrimaryKey($formid);
+		
+		if (!isset($form))
+        {
+            throw new Exception("Form not found for specified id");
+        }
+		
+		$link = $this->getConnection();
+		
+		$formView = FormViewModel::createFromObject($form);
+		$formView->IsTemplate = $isTemplate;
+		$propJson = mysqli_real_escape_string($link, $formView->getExtendedPropertiesAsJSONString());		
+        
+		$query = sprintf("UPDATE form SET ExtendedProperties='{$propJson}' WHERE ID='{$formid}' ");
+		parent::Execute($query);
+    }
+	
+	public function InsertFormObject($form){
+		$link = $this->getConnection();
+		
+		if (isset($form)){
+			$name = $form["Title"];
+			$slug = $form["Slug"];
+			$status = $form["Status"];
+			$extendedProps = mysqli_real_escape_string($link, $form["ExtendedProperties"]);
+			$fDateAdded = $form["DateAdded"];
+			$fConfirmation = mysqli_real_escape_string($link, $form["ConfirmationMessage"]);
+			$fTheme = $form["Theme"];
+			$fNotificationnEmail = $form["NotificationEmail"];
+			$counter = 0;
+			
+			$formExists = $this->FormObjectExists($name, $slug, $extendedProps);
+			if (!$formExists){
+				$formId = $this->InsertForm($name, $slug, $status, 
+											$fDateAdded, 
+											$fConfirmation, 
+											$extendedProps, 
+											$fTheme, 
+											$fNotificationnEmail);
+				
+				if (array_key_exists("Fields", $form) && is_array($form["Fields"]) && count($form["Fields"]) > 0){
+					
+					foreach($form["Fields"] as $field){
+						$fieldId = $this->InsertFormField($field["DomId"], $field["Label"], $field["Text"], $field["FieldType"], $field["IsRequired"], $field["MaxChars"],
+														  $field["HoverText"], $field["Hint"], $field["SubLabel"], $field["Size"], $field["Columns"], $field["Rows"], 
+														  $field["Options"], $field["SelectedOption"], $field["HelpText"], $field["Validation"], $field["Order"], 
+														  $field["MinimumAge"], $field["MaximumAge"], $field["MaxFilesizeInKb"], $field["MinFilesizeInKb"], $field["ValidFileExtensions"], 
+														  mysqli_real_escape_string($link, $field["ExtendedProperties"]), $field["DateAdded"], $formId);
+					}
+				}
+				$counter++;
+			}
+			
+			return $counter;
+		}
+		
+		
+
+	}
+	
+	public function FormObjectExists($name, $slug, $extendedProperties){
+		$query = "SELECT COUNT(*) FROM form WHERE Title='{$name}' AND Slug='{$slug}' AND ExtendedProperties='{$extendedProperties}'";
+		$result = parent::GetCol($query);
+		$count = $result[0];
+		return $count > 0;
+	}
+	
+	public function updateField($form, $fieldView)
+	{
+			
+		if (!isset($form))
+        {
+             throw new Exception("Cannot update a field when a form is null");
+        }
+		
+		$link = $this->getConnection();
+		
+		$formID = $form["ID"];		 
+        $Label = mysqli_real_escape_string($link, Utils::truncateChars($fieldView->Label,40));
+        $Text = trim($fieldView->Text);
+        $FieldType = $fieldView->FieldType;
+        $IsRequired = $fieldView->IsRequired;
+        $MaxChars = $fieldView->MaxCharacters;
+        $HoverText = mysqli_real_escape_string($link, trim($fieldView->HoverText));
+        $Hint = mysqli_real_escape_string($link, trim($fieldView->Hint));
+        $SubLabel = mysqli_real_escape_string($link, trim($fieldView->SubLabel));
+        $Size = $fieldView->Size;
+        $Columns = $fieldView->Columns;
+        $Rows = $fieldView->Rows;
+        $Options = mysqli_real_escape_string($link, $fieldView->Options);
+        $SelectedOption = mysqli_real_escape_string($link, $fieldView->SelectedOption);
+        $HelpText = mysqli_real_escape_string($link, trim($fieldView->HelpText));
+        $Validation = $fieldView->Validation;
+        $Order = $fieldView->Order;
+        $MinimumAge = $fieldView->MinimumAge;
+        $MaximumAge = $fieldView->MaximumAge;
+        $MaxFilesizeInKb = $fieldView->MaxFileSize;
+        $MinFilesizeInKb = $fieldView->MinFileSize;
+        $ValidFileExtensions = mysqli_real_escape_string($link, $fieldView->ValidFileExtensions);
+		$ExtendedProperties = mysqli_real_escape_string($link, $fieldView->ExtendedProperties);
+		
+         if (!isset($fieldView->Id) || !is_numeric($fieldView->Id))
+         {
+             // create
+			$DomId = $fieldView->DomId;
+            $DateAdded = date('Y-m-d H:i:s');
+			
+			$duplicateCount = $this->duplicateDomIdCount($formID, $DomId);
+             
+			 if($duplicateCount == 0){
+				 // add field
+				 $fieldId = $this->InsertFormField($DomId, $Label, $Text, $FieldType, $IsRequired, $MaxChars, $HoverText, $Hint, $SubLabel, $Size, $Columns, $Rows, $Options, $SelectedOption, $HelpText,
+												   $Validation, $Order, $MinimumAge, $MaximumAge, $MaxFilesizeInKb, $MinFilesizeInKb, $ValidFileExtensions, 
+												   $ExtendedProperties, $DateAdded, $formID);
+			 }
+         }
+         else
+         {
+		     $fieldId = $fieldView->Id;
+             $fField = $this->getField($fieldId);
+             if (isset($fField))
+             {
+                $query = "UPDATE form_fields " .
+				         "SET " . 
+						 "Label='{$Label}', Text='{$Text}', FieldType='{$FieldType}', IsRequired='{$IsRequired}', MaxChars='{$MaxChars}', HoverText='{$HoverText}', Hint='{$Hint}', " . 
+						 "SubLabel='{$SubLabel}', Size='{$Size}', `Columns`='{$Columns}', Rows='{$Rows}', Options='{$Options}', SelectedOption='{$SelectedOption}', " .
+						 "HelpText='{$HelpText}', Validation='{$Validation}', `Order`='{$Order}', MinimumAge='{$MinimumAge}', MaximumAge='{$MaximumAge}', " . 
+						 "MaxFileSizeInKb='{$MaxFilesizeInKb}', MinFileSizeInKb='{$MinFilesizeInKb}', ValidFileExtensions='{$ValidFileExtensions}', ExtendedProperties='{$ExtendedProperties}' " .
+						 "WHERE ID={$fieldId}";
+						 
+			    parent::Execute($query);
+               
+             }
+         }
+	}
+	
+	public function InsertFormField($DomId, $Label, $Text, $FieldType, $IsRequired, $MaxChars, $HoverText, $Hint, $SubLabel, $Size, $Columns, $Rows, $Options, $SelectedOption, $HelpText,
+									$Validation, $Order, $MinimumAge, $MaximumAge, $MaxFilesizeInKb, $MinFilesizeInKb, $ValidFileExtensions, $ExtendedProperties, $DateAdded, $formId){
+		$query="INSERT INTO form_fields " .
+						"(DomId, Label, Text, FieldType, IsRequired, MaxChars, HoverText, Hint, SubLabel, Size, `Columns`, Rows, Options, SelectedOption, HelpText, Validation, " . 
+						"`Order`, MinimumAge, MaximumAge, MaxFilesizeInKb, MinFilesizeInKb, ValidFileExtensions, ExtendedProperties, DateAdded" .
+						") " .
+						" VALUES( " .
+						"'{$DomId}', '{$Label}', '{$Text}', '{$FieldType}', '{$IsRequired}', '{$MaxChars}', '{$HoverText}', '{$Hint}', '{$SubLabel}', '{$Size}', '{$Columns}', '{$Rows}', " . 
+						"'{$Options}', '{$SelectedOption}', '{$HelpText}', '{$Validation}', '{$Order}', '{$MinimumAge}', '{$MaximumAge}', '{$MaxFilesizeInKb}', '{$MinFilesizeInKb}', " .
+						" '{$ValidFileExtensions}', '{$ExtendedProperties}', '{$DateAdded}'" .
+						")";
+				
+		parent::Execute($query);
+		$fieldId= parent::getInsertID();		
+		
+		// add reference
+		if (isset($fieldId) && is_numeric($fieldId) && isset($formId)){
+			$refQuery = "INSERT INTO form_form_fields (fieldId, formId) VALUES ({$fieldId}, {$formId})";
+			parent::Execute($refQuery);
+		}
+				 
+		return $fieldId;
+	}
+	
+	public function duplicateDomIdCount($formId, $domId)
+	{		
+		$query = 'SELECT Count(fld.ID) FROM form_fields as fld' . 
+				 ' INNER JOIN form_form_fields as formfield on fld.ID=formfield.fieldId' . 
+				 ' WHERE fld.DomId=' . $domId . ' AND formfield.formId=' . $formId ;
+		
+		$result = parent::GetCol($query);
+		$count = $result[0];
+		return $count;
+	}
+	
+	public function ValidEntryExists($entryId){
+		$query = "SELECT Count(*) FROM form_field_values WHERE EntryID='{$entryId}'";
+		$result = parent::GetCol($query);
+		$count = $result[0];
+		return $count > 0;
+	}
+	
+	 public function getField($id)
+	 {
+	    $fields = R::getAll(sprintf("SELECT * FROM form_fields WHERE ID={$id}"));
+		if(count($fields) > 0)
+		{
+		  return $fields[0];
+		}
+	 }
+	 
+	 public function getFieldValue($fieldId, $entryId)
+	 {
+	    $values = R::getAll(sprintf("SELECT * FROM form_field_values WHERE EntryId='{$entryId}' AND FieldId={$fieldId}"));
+		if(count($values) > 0)
+		{
+		  return $values[0];
+		}
+	 }
+	 
+    public function GetFormFieldDomIds($id)
+	{
+	    $fields = $this->GetFieldsByFormId($id);
+		$fieldArr = array();
+		if(count($fields) > 0)
+		{	
+			foreach($fields as $field){
+			   array_push($fieldArr, array("domid"=>$field["DomId"], "id"=>$field["ID"]));
+			}		
+		}
+		
+		return $fieldArr;
+	}
+	
+	public function CopyForm($form, $usesTemplate)
+    {
+		$link=$this->getConnection();
+		$baseformid = $form["ID"];
+		$formPrefix = $usesTemplate ? "" : "(copy) ";
+        $formName = mysqli_real_escape_string($link, $formPrefix . $form["Title"]);
+		$formSlug = Utils::toSlug($formName);		
+		$status=$form["Status"];
+		$confirmation = mysqli_real_escape_string($link, $form["ConfirmationMessage"]);
+		$extendedProperties = $form["ExtendedProperties"];
+		
+		// update the "IsTemplate" property 
+		// TODO: compress this (update extended property) into a static function on FormViewModel
+		if ($usesTemplate){
+		$props = array_key_exists('ExtendedProperties', $form) ? $form["ExtendedProperties"] : "";
+		$formView = new FormViewModel();
+			if(!isNullOrEmpty($props)){
+				$propsObj = json_decode($props,true);
+				$propsObj["IsTemplate"] = false;				
+				$extendedProperties = json_encode($propsObj);
+			}
+		}
+		
+		$theme = $form["Theme"];
+		$notificationemail = $form["NotificationEmail"];
+		$date = date('Y-m-d H:i:s');		 
+		
+		// insert form
+		$query = sprintf("INSERT INTO form (Title, Slug, Status, DateAdded, ConfirmationMessage, ExtendedProperties, Theme, NotificationEmail) " . 
+				         "VALUES ( '{$formName}', '{$formSlug}', '{$status}','{$date}', '{$confirmation}', '{$extendedProperties}', '{$theme}', '{$notificationemail}')");				
+		parent::Execute($query);
+		
+		
+		$newformid = parent::getInsertID();
+		$form["ID"]=$newformid; // to prevent fetching the new form again, just switch the old one's ID to "fool" the process
+		$fields = $this->GetFieldsByFormId($baseformid);
+		
+		foreach($fields as $field)
+		{
+			$formFieldView = FormFieldViewModel::createFromObjectWithMode($field, "EDIT", false);
+			$formFieldView->ExtendedProperties = $field["ExtendedProperties"];
+			$formFieldView->Id = null;
+			$this->updateField($form, $formFieldView);
+		}	
+		return $newformid;
+    }
+	
+	public function GetFieldsByFormId($id)
+	{
+	   $fields = R::getAll(sprintf("SELECT * FROM form_fields field INNER JOIN form_form_fields formField ON field.ID=formField.fieldid  WHERE formField.formid='{$id}' Order by `order`"));
+	   return $fields;
+	}
+	
+	public function GetFormByFieldId($fieldid){
+	   $forms = R::getAll(sprintf("SELECT form.* FROM form INNER JOIN form_form_fields formField ON form.ID=formField.formId WHERE formField.fieldId='{$fieldid}' "));
+	   if (count($forms) > 0){
+		   return $forms[0];
+	   }
+	   return null;
+	}
+	
+	public function DeleteField($id)
+	{
+	   parent::Execute("DELETE FROM form_field_values WHERE FieldID={$id}");
+	   parent::Execute("DELETE FROM form_form_fields WHERE fieldid={$id}");
+	   parent::Execute("DELETE FROM form_fields WHERE ID={$id}");
+	}
+	
+	public function UpdateStatus($id, $status)
+	{
+		parent::Execute("UPDATE form SET status='{$status}' WHERE ID={$id}");
+	}
+	
+	public function InsertFieldValue($field, $value, $entryId, $userId = "")
+    {
+        if (!Utils::isExcludedField($field->FieldType))
+        {
+			$link=$this->getConnection();
+           
+            $valueString = CreateFieldValueInsertString($field, $value, $entryId, $userId);
+            
+			$query="INSERT INTO form_field_values (fieldId, entryId, `Value`, DateAdded) VALUES {$valueString}";
+			parent::Execute($query);
+        }
+    }
+	
+	public function InsertFieldValues($valueString)
+    {        
+		$link=$this->getConnection();
+		$query="INSERT INTO form_field_values (fieldId, entryId, `Value`, DateAdded) VALUES {$valueString}";
+		parent::Execute($query);	
+    }
+	
+	public function CreateFieldValueInsertString($field, $value, $entryId, $userId = "")
+	{
+		if (!Utils::isExcludedField($field->FieldType))
+        {	
+			$link=$this->getConnection();	
+            $fieldId = $field->Id;
+            $value = mysqli_real_escape_string($link, $value);
+            $entryId = $entryId;
+            $dateAdded = date('Y-m-d H:i:s');
+            
+			$queryPart="({$fieldId},'{$entryId}', '{$value}', '{$dateAdded}')";
+			return $queryPart;
+        }
+	}
+	
+	
+	
+	public function ClearExistingValues($entryId, $fieldArray){
+		
+		$values = $this->getValuesByEntryID($entryId);
+		$fieldIdString = '';
+		
+		// delete file values
+		foreach($fieldArray as $field){
+			$fieldId = $field->Id;
+			if ($field->FieldType == "FILEPICKER"){				
+				$entryField = $this->getField($fieldId);
+				$valueObj = $this->getFieldValue($fieldId, $entryId);
+				if(isset($entryField)){
+					$this->deleteFileEntryIfPresent($entryField, $valueObj);
+				}	
+			}
+		    $fieldIdString = $fieldIdString . $field->Id . ",";
+		}
+				
+	    if (!isNullOrEmpty($fieldIdString)){			
+			$fieldIdString = rtrim($fieldIdString ,",");		
+			$query = "DELETE FROM form_field_values WHERE EntryId='{$entryId}' AND FieldId IN ({$fieldIdString})";
+			parent::Execute(sprintf($query));
+		}
+	}
+	
+	public function DeleteForm($formId)
+	{	 
+	   //delete submissions 
+	   $submissionsQuery = "DELETE form_field_values  FROM form_field_values INNER JOIN form_form_fields ON form_form_fields.fieldId = form_field_values.fieldId WHERE form_form_fields.formId='{$formId}'";
+	   $fieldsQuery = "DELETE form_fields FROM form_fields INNER JOIN form_form_fields ON form_form_fields.fieldId = form_fields.Id WHERE form_form_fields.formId='{$formId}'";
+	   $formJoinTableQuery="DELETE FROM form_form_fields WHERE formId='{$formId}'";
+	   $formQuery="DELETE FROM form WHERE ID='{$formId}'";
+	   
+	   parent::Execute($submissionsQuery);
+	   parent::Execute($fieldsQuery);
+	   parent::Execute($formJoinTableQuery);
+	   parent::Execute($formQuery);
+	
+	}
+	
+	public function DeleteForms($olderThanInDays, $excludeIds=array()){
+	   $datestr = date("Y-m-d H:i:s");
+	   $date = new DateTime($datestr);
+	   $date->sub(date_interval_create_from_date_string( $olderThanInDays . ' days'));
+	   $dateCheckStr = $date->format("Y-m-d H:i:s");
+	   
+	   $applicableFormIds = R::getAll(sprintf("SELECT ID FROM form WHERE DateAdded < '{$dateCheckStr}'"));
+		
+	   $this->DeleteFormsByIds($applicableFormIds, $excludeIds);
+	}
+	
+	public function DeleteFormsByIds($applicableFormIds, $excludeIds=array()){
+		if(count($applicableFormIds) > 0){
+			foreach($applicableFormIds as $form){
+			   $formId = $form["ID"];	
+			   if(!in_array($formId, $excludeIds)){
+				  $this->DeleteForm($formId);
+			   }
+			}
+	   }
+	}
+	
+	public function CleanEmptyForms($olderThanInMinutes, $excludeIds=array()){
+	   $datestr = date("Y-m-d H:i:s");
+	   $date = new DateTime($datestr);
+	   $date->sub(date_interval_create_from_date_string( $olderThanInMinutes . ' minutes'));
+	   $dateCheckStr = $date->format("Y-m-d H:i:s");
+	   
+	   $applicableFormIds = R::getAll(sprintf("SELECT count(ff.formId) as fieldcount, form.ID, form.DateAdded FROM " .
+											  "form_form_fields as ff " .
+											  "RIGHT JOIN form on form.ID=ff.formID " .
+											  "WHERE form.DateAdded < '{$dateCheckStr}' " .
+											  "GROUP BY ff.formID " .
+											  "HAVING fieldcount=0 "));
+		
+	   $this->DeleteFormsByIds($applicableFormIds, $excludeIds);
+	}
+	
+	public function GetRegistrantsByForm($formId, $entryId=null)
+	{
+		$entryIdFilter = "";
+		if (isset($entryId)){
+		  $entryIdFilter = " AND EntryId='" . $entryId . "' " ;	
+		}
+		
+		$query = "SELECT form_field_values.*, form_fields.FieldType, form_fields.Label, form_fields.Order, form_fields.DomId FROM form_fields " . 
+			     "LEFT JOIN form_field_values ON form_fields.ID =form_field_values.fieldId " . 
+				 "INNER JOIN form_form_fields ON form_fields.ID=form_form_fields.fieldId " . 
+				 "WHERE form_form_fields.formId='{$formId}' AND form_field_values.EntryId IS NOT NULL " . $entryIdFilter .  				 
+				 "ORDER BY form_fields.Order DESC, form_field_values.DateAdded DESC";
+				 
+		return R::getAll(sprintf($query));
+	}
+	
+	
+	public function GetRegistrantObjectsByForm($formId){
+	   
+	   $registrants = $this->GetRegistrantsByForm($formId);
+	   $registrantArray = array();
+	   foreach($registrants as $registrant){		   
+			array_push($registrantArray, FormFieldValueViewModel::createFromObject($registrant));	   
+	   }
+
+	   return $registrantArray;	
+	}
+	
+	public function GetEntryValues($formId, $entryId)
+	{		 
+	    $entries =  $this->GetRegistrantsByForm($formId, $entryId);
+		$entry_hash = array();
+		foreach ($entries as $entry){
+			$entryObj = FormFieldValueViewModel::createFromObject($entry);
+			$entry_hash[$entryObj->FieldId] = $entryObj;
+		}		
+		return $entry_hash;
+	}
+	
+	public function deleteEntry($entryId){
+		
+		$values = $this->getValuesByEntryID($entryId);
+		
+		foreach($values as $value){
+		    $entryField = $this->getField($value["FieldId"]);
+			if(isset($entryField)){
+				$this->deleteFileEntryIfPresent($entryField, $value);
+			}
+		}
+				
+		$query = "DELETE FROM form_field_values WHERE EntryId='{$entryId}'";
+		parent::Execute(sprintf($query));
+	}
+	
+	
+	
+	public function deleteFileEntryIfPresent($fileFieldObj, $valueObject){		
+		
+		if($fileFieldObj['FieldType'] == 'FILEPICKER'){
+			$fileField = FormFieldViewModel::createFromObjectWithMode($fileFieldObj, 'edit');
+			$fileObj = Utils::getFileValueFromJsonObject($valueObject["Value"]);
+			
+			if(isset($fileObj)){
+				if($fileObj->IsSavedInCloud){
+					Utils::deleteImageFromCloud($fileObj->SaveName);
+				}else{
+					$filePath = str_replace("//", "/", $fileObj->SavePath) . $fileObj->SaveName;
+					if (file_exists($filePath)){
+						unlink($filePath);
+					}
+				}
+			}
+		}
+	}
+	
+	public function getFileFieldValueObject($valueId){
+		
+		$query = "SELECT * FROM form_field_values " .		         
+				 " WHERE ID={$valueId}" ;
+		
+		$values = R::getAll(sprintf($query));
+		
+		if(count($values) > 0)
+		{
+		  $valueObj = $values[0];
+		  $fileObj = Utils::getFileValueFromJsonObject($valueObj["Value"]);
+		  return $fileObj;
+		}
+		
+		return null;
+	}
+	
+	public function getValuesByEntryID($entryId)
+	{		
+		$query = "SELECT * FROM form_field_values " .		         
+				 " WHERE EntryId='{$entryId}'" ;
+				
+		$values = R::getAll(sprintf($query));
+				
+		return $values;
+	}
+	
+	
+	
+	
+	
+
+}
+
+?>

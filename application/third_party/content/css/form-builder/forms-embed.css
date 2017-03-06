@@ -1,0 +1,5 @@
+﻿/* forms - common */
+html, body{background-image:none;background-color:transparent;}
+.form-page-container{margin:0;padding:0;}
+.center-column{margin:0 !important;border:0px;}
+.drop-form-list li.drop-item:hover{background-color:transparent;}

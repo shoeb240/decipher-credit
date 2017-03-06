@@ -1,0 +1,177 @@
+﻿html, body {
+    background-image: none;
+    background-color: white;
+}
+
+ul.entry-form-list li h2.default {
+	color: gray;
+	margin:0 !important;
+}
+
+.form-page-container
+{
+  padding-top:0px;
+}
+
+.entry-form-list li .label,.entry-form-list li label {
+    color: #5d5c5c;
+	text-align:left;
+	float:none !important;
+	margin:0 !important;
+}
+
+
+li.drop-item label.label{width:90% !important;}
+
+.entry-form-list li .sub-label {
+    color: gray;
+}
+
+.entry-form-list li span.required {
+    color: red !important;
+}
+
+.entry-form-list li span.required.hidden {
+    display:none;
+}
+
+.entry-form-list li .field-validation-error {
+    color: red;
+}
+
+.confirmation-page-container {
+    color: White;
+}
+
+.form-paragraph-container{
+ color:#5d5c5c;
+}
+
+input[type="text"], input[type="password"], input.text, input.title, textarea, select {
+    border: 1px solid #c0c0c0;
+}
+
+.textbox-control input.title,
+.email-control input.title,
+.address-control input.title,
+.phone-control input.title,
+.dropdownlist-control select
+{height:25px !important;}
+
+
+.entry-form-list li ul.two-field-row{
+	width:100%;
+}
+
+
+.entry-form-list li ul.two-field-row li{
+   width:47%;
+}
+
+.entry-form-list li ul.two-field-row li:nth-child(1){
+	margin-right:27px;
+}
+
+.drop-form-list li ul.two-field-row select.shorter-field {
+    height: 38px;
+    width: 100% !important;
+}
+
+
+ul.entry-form-list li select.default{
+	width:100%;
+	height: 30px !important;
+}
+
+
+.drop-form-list li ul.three-field-row input[type=text], 
+.drop-form-list li ul.three-field-row input[type=password] {
+	height:25px;
+}
+
+.forms-register .stepper{
+	width:50% !important;
+}
+
+.drop-form-list li div.input input.shorter-field{
+	width:94% !important;
+}
+
+.drop-form-list li div.input input.mini-field{
+	width:33px;
+}
+
+
+.datepicker-control input[type="text"]:hover,
+.datepicker-control input[type="password"]:hover{
+   border-width:0;
+   border-color:transparent !important;
+}
+
+.textbox-control input[type="text"], 
+.textbox-control input[type="password"], 
+.email-control input[type="text"], 
+.address-control input[type="text"],
+.textarea-control textarea{
+	width: 97% !important;
+}
+
+.birthdaypicker-control select{
+	height:25px;
+	width:100% !important;
+}
+.birthdaypicker-control li.month-item{width:16% !important;}
+.birthdaypicker-control li.day-item{width:11% !important;}
+.birthdaypicker-control li.year-item{width:17% !important;}
+
+.entry-form-list li ul.two-field-row li.area-code-item{
+	width:15%;
+	margin:0 !important;
+	color: gray;
+}
+
+.entry-form-list li ul.two-field-row input.area-code {
+    width: 73% !important;
+}
+
+.entry-form-list li ul.two-field-row .phone-number-item {
+    width: 32% !important;
+}
+
+.entry-form-list li ul.two-field-row .phone-number-item input[type=text],
+.entry-form-list li ul.two-field-row .phone-number-item input[type=password]{
+	width:92% !important;
+}
+
+.entry-form-list li ul.three-field-row input.first-name,
+.entry-form-list li ul.three-field-row input.last-name
+ {
+    width: 92% !important;
+}
+
+
+.filepicker-control div.input input.title{width: 45% !important;}
+
+.drop-form-list li.drop-item:hover
+{
+	background-color:transparent;
+}
+
+.center-column
+{
+	margin:0 !important;border:0px;
+}
+
+input[type="submit"] {
+}
+
+.entry-form-list li div.input {
+	clear:both;
+	width:90%;
+}
+
+.formbreak-control div.input {
+    height: 40px;
+    margin-left: 0 !important;
+    padding-bottom: 0;
+}

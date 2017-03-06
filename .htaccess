@@ -1,0 +1,10 @@
+<IfDefine APACHE2>
+    AcceptPathInfo on
+</IfDefine>
+
+php_flag file_uploads 1
+php_value post_max_size 100000000
+php_value upload_max_filesize 1000000000
+php_value memory_limit 100000000
+php_value max_input_time 50000
+php_value max_execution_time 86400

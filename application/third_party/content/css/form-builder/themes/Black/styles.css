@@ -1,0 +1,53 @@
+﻿html, body {
+    background-image: none;
+    background-color: black;
+}
+
+h2.default {
+    color: White;
+}
+
+.center-column
+{
+	margin:0 !important;border:0px;
+}
+
+.form-page-container
+{
+  padding-top:0px;
+}
+
+.entry-form-list li .label,.entry-form-list li label {
+    color: White;
+}
+
+.entry-form-list li .sub-label {
+    color: White;
+}
+
+.form-paragraph-container{
+ color:white;
+}
+
+input[type="text"], input[type="password"], input.text, input.title, textarea, select {
+}
+
+.entry-form-list li span.required {
+    color: White !important;
+}
+
+.entry-form-list li .field-validation-error {
+    color: White;
+}
+
+.confirmation-page-container {
+    color: white;
+}
+
+.drop-form-list li.drop-item:hover
+{
+	background-color:transparent;
+}
+
+input[type="submit"] {
+}

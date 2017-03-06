@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<InputMasks>
+	<inputmask name="Email" mask="'alias':'email', 'clearMaskOnLostFocus': false" />
+	<inputmask name="Date" mask="'alias':'date', 'placeholder': 'dd/mm/yyyy', 'clearMaskOnLostFocus': false" />
+	<inputmask name="Phone (UK)" mask="'mask' : '+44-##-####-####', 'placeholder' : '+44-##-####-####', 'clearMaskOnLostFocus': false" />
+	<inputmask name="Phone (US)" mask="'mask' : '+1(###)###-####', 'placeholder' : '+1(###)###-####', 'clearMaskOnLostFocus': false" />
+</InputMasks>
